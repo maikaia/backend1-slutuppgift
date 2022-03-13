@@ -2,11 +2,32 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title>Express Boilerplate</title>
+        <title>Twitter</title>
     </head>
 
     <body>
-        <h1>Hello <%= username %>!</h1>
+        <a href="/logout">Logout</a><br>
+        <a href="/mypage">Profile</a>
+
+        <form action="/" method="post">
+            Title: <br><input type="text" name="title" /></br/>
+            Content: <br><textarea name="content" cols="50" rows="2" maxlength="140"></textarea><br>
+            <input type="submit" value="Post!">
+        </form>
+
+        <% posts.forEach(post => {  %> 
+            <div>
+                <h3> 
+                    <a href="/users/<%= post.user.username %>">
+                        <img src="<%= post.user.profilePicture %>" height="40" width="40" />
+                        <%= post.user.username %>
+                    </a>
+                </h3>
+                <h4> <%= post.title %> </h4>
+                <p> <%= post.content %> </p>
+                <p> <%= post.postTime %> </p>
+                <hr/>
+            </div>
+        <% }) %>
     </body>
-    <a href="/logout">Logout</a>
 </html>

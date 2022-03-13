@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>twitter yeah baby</title>
+    </head>
+
+    <body>
+        <a href="/">Home</a>
+        <h1> <img src="<%= user.profilePicture %>" height="150" width="150"/> <%= user.username %> </h1> <hr />
+
+        <% posts.forEach(post => {  %> 
+            <div>
+                <h3> 
+                    <img src="<%= post.user.profilePicture %>" height="40" width="40" />
+                    <%= post.user.username %>
+                </h3>
+                <h4> <%= post.title %> </h4>
+                <p> <%= post.content %> </p>
+                <p> <%= post.postTime %> </p>
+                <hr/>
+            </div>
+       <% }) %>
+    </body>
+</html>
