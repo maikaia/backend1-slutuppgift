@@ -2,13 +2,13 @@
 <html lang="en">
     <head>
         <meta charset="utf-8">
-        <title><%= post.user.username %> profile</title>
+        <title>Twitter</title>
     </head>
 
     <body>
         <a href="/logout">Log out</a>
         <a href="/">Home</a>
-        <h1>Logged in as <%= post.user.username %></h1>
+        <h1>Logged in as <%= user.username %></h1>
         <img src="<%= user.profilePicture %>" alt="profile picture" height="150" width="150"> <br />
 
         <%= typeof msg != "undefined" ? msg : "" %>

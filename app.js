@@ -55,12 +55,14 @@ app.get("/logout", (req, res) => {
 })
 
 app.get("/", async (req, res) => {
-    if (req.user) {
         const posts = await Post.find({}).populate("user").sort({postTime: -1})
         res.render("index.ejs", {posts})
-    } else {
-        res.redirect("/login")
-    }
+})
+
+app.get("/users/:username", async (req, res) => {
+    const user = await User.findOne({username: req.params.username})
+    const posts = await Post.find({user: user._id}).populate("user").sort({postTime: -1})
+    res.render("profile.ejs", {posts, user})
 })
 
 app.use(ensureLoggedIn("/login"))
@@ -102,7 +104,6 @@ app.post("/mypage", (req, res) => {
                 res.render("myPage.ejs", {
                     msg: "File uploaded!",
                     user: req.user
-                    
                 })
             }
         }
