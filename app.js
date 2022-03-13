@@ -31,7 +31,6 @@ app.use(session({
 }))
 app.use(passport.authenticate("session"))
 
-
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
         callback(null, "./uploads/images/")
@@ -56,7 +55,6 @@ app.post("/signup", async (req, res) => {
     const user = new User({username})
     await user.setPassword(password)
     await user.save()
-    // console.log(req.body)
     res.redirect("/login")
 })
 
@@ -112,20 +110,14 @@ app.post("/mypage", (req, res) => {
                 user: req.user
             })
         } else {
-            if(req.file == undefined) {
-                res.render("myPage.ejs", {
-                    msg: "Error: Please select a file!",
-                    user: req.user
-                })
-            } else {
-                const user = await User.findOne({_id: req.user._id})
+            const user = await User.findOne({_id: req.user._id})
+            if(req.file) {
                 user.profilePicture = `/images/${req.file.filename}`
-                await user.save()
-                res.render("myPage.ejs", {
-                    msg: "File uploaded!",
-                    user: req.user
-                })
             }
+            user.fullName = req.body.fullName
+            user.email = req.body.email
+            await user.save()
+            res.redirect("/mypage")
         }
     })
 })

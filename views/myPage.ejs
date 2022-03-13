@@ -10,14 +10,29 @@
         <a href="/">Home</a>
         <h1>Logged in as <%= user.username %></h1>
         <img src="<%= user.profilePicture %>" alt="profile picture" height="150" width="150"> <br />
+        <p> <%= user.fullName %> </p>
+        <p> <%= user.email %> </p>
 
         <%= typeof msg != "undefined" ? msg : "" %>
 
         <form action="/mypage" method="post" enctype="multipart/form-data">
             Change profile picture: <input type="file" name="profilePicture" /> <br />
-            Change your name: <input type="text" name="fullName" /> <br />
-            Change your E-Mail: <input type="text" name="email" /> <br />
+            Change your name:       <input type="text" name="fullName" placeholder="John Doe"/> <br />
+            Change your E-Mail:     <input type="text" name="email" placeholder="johndoe@gmail.com"/> <br />
             <input type="submit" value="Update profile!">
-        </form> <hr />
+        </form> <br /> 
+
+        <% posts.forEach(post => {  %> 
+            <div>
+                <h3> 
+                    <img src="<%= post.user.profilePicture %>" height="40" width="40" />
+                    <%= post.user.username %>
+                </h3>
+                <h4> <%= post.title %> </h4>
+                <p> <%= post.content %> </p>
+                <p> <%= post.postTime %> </p>
+                <hr/>
+            </div>
+       <% }) %>
     </body>
 </html>
