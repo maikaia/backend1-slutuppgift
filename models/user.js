@@ -6,7 +6,7 @@ const userSchema = new mongoose.Schema({
     fullName: {type: String},
     profilePicture: {
         type: String,
-        default: "/DefaultProfilePic.jpg"
+        default: "/images/DefaultProfilePic.jpg"
     }
 })
 userSchema.plugin(passportLocalMongoose)

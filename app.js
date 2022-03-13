@@ -1,3 +1,4 @@
+require("dotenv").config()
 const express = require("express");
 const mongoose = require("mongoose")
 const passport = require("passport")
@@ -12,20 +13,39 @@ const { Post } = require("./models/post")
 const { ensureLoggedIn } = require("connect-ensure-login")
 
 const app = express()
+const PORT = 3000;
+const MONGO_URL = process.env.MONGO_URL
+const SESSION_SECRET = process.env.SESSION_SECRET
 
 passport.use(User.createStrategy())
 passport.serializeUser(User.serializeUser())
 passport.deserializeUser(User.deserializeUser())
 
 app.use(express.urlencoded({extended: true}))
+app.use(express.static("./uploads"))
 app.use(session({
-    secret: "avsd1234",
+    secret: SESSION_SECRET,
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    store: MongoStore.create({mongoUrl: MONGO_URL})
 }))
 app.use(passport.authenticate("session"))
 
-const PORT = 3000;
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+        callback(null, "./uploads/images/")
+    },
+    filename: (req, file, callback) => {
+        console.log(req.user)
+        callback(null, file.fieldname + "-" + Date.now() + path.extname(file.originalname))
+    }
+})
+
+const upload = multer({ 
+    storage: storage,
+    limits: {fileSize: 2000000}
+}).single("profilePicture")
 
 app.get("/signup", (req, res) => {
     res.render("signup.ejs")
@@ -110,7 +130,7 @@ app.post("/mypage", (req, res) => {
     })
 })
 
-mongoose.connect("mongodb://localhost/slutuppgift")
+mongoose.connect(MONGO_URL)
 
 app.listen(PORT, () => {
   console.log(`Started Express server on port ${PORT}`);
